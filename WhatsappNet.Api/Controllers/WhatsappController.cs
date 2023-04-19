@@ -59,35 +59,13 @@ namespace WhatsappNet.Api.Controllers
 
                     object objectMessage;
 
-                    switch (userText.ToUpper())
+                    if(userText.ToUpper().Contains("HOLA"))
                     {
-                        case "TEXT":
-                            objectMessage = _utils.TextMessage(userNamber, "Este es un ejemplo de texto");
-                            break;
-                        case "COMPRAR":
-                            objectMessage = _utils.TextMessage(userNamber, "Seleccionaste comprar");
-                            break;
-                        case "IMAGE":
-                            objectMessage = _utils.ImageMessage(userNamber, "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/image_whatsapp.png");
-                            break;
-                        case "AUDIO":
-                            objectMessage = _utils.AudioMessage(userNamber, "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/audio_whatsapp.mp3");
-                            break;
-                        case "VIDEO":
-                            objectMessage = _utils.VideoMessage(userNamber, "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/video_whatsapp.mp4");
-                            break;
-                        case "DOCUMENT":
-                            objectMessage = _utils.DocumentMessage(userNamber, "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/document_whatsapp.pdf");
-                            break;
-                        case "LOCATION":
-                            objectMessage = _utils.LocationMessage(userNamber, new());
-                            break;
-                        case "BUTTON":
-                            objectMessage = _utils.ButtonsMessage(userNamber);
-                            break;
-                        default:
-                            objectMessage = _utils.TextMessage(userNamber, "I dont understand Nya :3");
-                            break;
+                        objectMessage = _utils.TextMessage(userNamber, "¿Hola, como te puedo ayudar? 😊");
+                    } 
+                    else
+                    {
+                        objectMessage = _utils.TextMessage(userNamber, "Lo siento, no puedo entenderte 😢");
                     }
 
                     await _whasappService.Execute(objectMessage);
