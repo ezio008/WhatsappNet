@@ -64,6 +64,9 @@ namespace WhatsappNet.Api.Controllers
                         case "TEXT":
                             objectMessage = _utils.TextMessage(userNamber, "Este es un ejemplo de texto");
                             break;
+                        case "COMPRAR":
+                            objectMessage = _utils.TextMessage(userNamber, "Seleccionaste comprar");
+                            break;
                         case "IMAGE":
                             objectMessage = _utils.ImageMessage(userNamber, "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/image_whatsapp.png");
                             break;
