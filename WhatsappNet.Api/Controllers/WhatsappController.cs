@@ -57,26 +57,30 @@ namespace WhatsappNet.Api.Controllers
                     var userNamber = message.From;
                     var userText = GetUserText(message);
 
-                    object objectMessage;
+                    List<object> objectMessage = new();
 
                     if (userText.ToUpper().Contains("HOLA"))
                     {
-                        objectMessage = _utils.TextMessage(userNamber, "¿Hola, como te puedo ayudar? 😊");
+                        objectMessage.Add(_utils.TextMessage(userNamber, "¿Hola, como te puedo ayudar? 😊"));
+                        objectMessage.Add(_utils.TextMessage(userNamber, "Responderé todas tus preguntas 😊"));
                     }
                     else if (userText.ToUpper().Contains("GRACIAS"))
                     {
-                        objectMessage = _utils.TextMessage(userNamber, "Gracias a ti por escribirme. 😊");
+                        objectMessage.Add(_utils.TextMessage(userNamber, "Gracias a ti por escribirme. 😊"));
                     }
                     else if (userText.ToUpper().Contains("ADIOS") || userText.ToUpper().Contains("HASTALUEGO"))
                     {
-                        objectMessage = _utils.TextMessage(userNamber, "Ve con cuidado. 😊");
+                        objectMessage.Add(_utils.TextMessage(userNamber, "Ve con cuidado. 😊"));
                     }
                     else
                     {
-                        objectMessage = _utils.TextMessage(userNamber, "Lo siento, no puedo entenderte 😢");
+                        objectMessage.Add(_utils.TextMessage(userNamber, "Lo siento, no puedo entenderte 😢"));
                     }
 
-                    await _whasappService.Execute(objectMessage);
+                    foreach (var item in objectMessage)
+                    {
+                        await _whasappService.Execute(item);
+                    }
                 }
 
                 return Ok("EVENT_RECEIVED");
