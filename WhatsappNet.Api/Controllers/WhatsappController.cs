@@ -59,10 +59,18 @@ namespace WhatsappNet.Api.Controllers
 
                     object objectMessage;
 
-                    if(userText.ToUpper().Contains("HOLA"))
+                    if (userText.ToUpper().Contains("HOLA"))
                     {
                         objectMessage = _utils.TextMessage(userNamber, "¿Hola, como te puedo ayudar? 😊");
-                    } 
+                    }
+                    else if (userText.ToUpper().Contains("GRACIAS"))
+                    {
+                        objectMessage = _utils.TextMessage(userNamber, "Gracias a ti por escribirme. 😊");
+                    }
+                    else if (userText.ToUpper().Contains("ADIOS") || userText.ToUpper().Contains("HASTALUEGO"))
+                    {
+                        objectMessage = _utils.TextMessage(userNamber, "Ve con cuidado. 😊");
+                    }
                     else
                     {
                         objectMessage = _utils.TextMessage(userNamber, "Lo siento, no puedo entenderte 😢");
