@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WhatsappNet.Api.Models.WhatsappCloud;
+using WhatsappNet.Api.Services.OpenAI.ChatGPT;
 using WhatsappNet.Api.Services.WhatsappCloud;
 using WhatsappNet.Api.Utils;
 
@@ -11,11 +12,13 @@ namespace WhatsappNet.Api.Controllers
     {
         private readonly IWhasappCloudService _whasappService;
         private readonly IUtils _utils;
+        private readonly IChatGPTService _chatGPTService;
 
-        public WhatsappController(IWhasappCloudService whasappService, IUtils utils)
+        public WhatsappController(IWhasappCloudService whasappService, IUtils utils, IChatGPTService chatGPTService)
         {
             _whasappService = whasappService;
             _utils = utils;
+            _chatGPTService = chatGPTService;
         }
 
         [HttpGet("sample")]
@@ -58,24 +61,9 @@ namespace WhatsappNet.Api.Controllers
                     var userText = GetUserText(message);
 
                     List<object> objectMessage = new();
-
-                    if (userText.ToUpper().Contains("HOLA"))
-                    {
-                        objectMessage.Add(_utils.TextMessage(userNamber, "¿Hola, como te puedo ayudar? 😊"));
-                        objectMessage.Add(_utils.TextMessage(userNamber, "Responderé todas tus preguntas 😊"));
-                    }
-                    else if (userText.ToUpper().Contains("GRACIAS"))
-                    {
-                        objectMessage.Add(_utils.TextMessage(userNamber, "Gracias a ti por escribirme. 😊"));
-                    }
-                    else if (userText.ToUpper().Contains("ADIOS") || userText.ToUpper().Contains("HASTALUEGO"))
-                    {
-                        objectMessage.Add(_utils.TextMessage(userNamber, "Ve con cuidado. 😊"));
-                    }
-                    else
-                    {
-                        objectMessage.Add(_utils.TextMessage(userNamber, "Lo siento, no puedo entenderte 😢"));
-                    }
+                    
+                    var responseChatGPT = await _chatGPTService.Execute(userText);
+                    objectMessage.Add(_utils.TextMessage(userNamber, responseChatGPT));
 
                     foreach (var item in objectMessage)
                     {
