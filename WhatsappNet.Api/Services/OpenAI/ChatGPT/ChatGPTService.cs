@@ -5,11 +5,13 @@ namespace WhatsappNet.Api.Services.OpenAI.ChatGPT
 {
     public class ChatGPTService : IChatGPTService
     {
-        private readonly string apiKey = "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";
         private readonly OpenAIAPI _openAIAPI;
 
-        public ChatGPTService()
+        public ChatGPTService(IConfiguration configuration)
         {
+            var apiKey = configuration["OpenAI:ApiKey"];
+            if (string.IsNullOrEmpty(apiKey))
+                throw new InvalidOperationException("OpenAI API key is not configured. Set the 'OpenAI:ApiKey' configuration value.");
             _openAIAPI = new OpenAIAPI(apiKey);
         }
         public async Task<string> Execute(string messageUser)
