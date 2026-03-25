@@ -13,12 +13,14 @@ namespace WhatsappNet.Api.Controllers
         private readonly IWhasappCloudService _whasappService;
         private readonly IUtils _utils;
         private readonly IChatGPTService _chatGPTService;
+        private readonly IConfiguration _configuration;
 
-        public WhatsappController(IWhasappCloudService whasappService, IUtils utils, IChatGPTService chatGPTService)
+        public WhatsappController(IWhasappCloudService whasappService, IUtils utils, IChatGPTService chatGPTService, IConfiguration configuration)
         {
             _whasappService = whasappService;
             _utils = utils;
             _chatGPTService = chatGPTService;
+            _configuration = configuration;
         }
 
         [HttpGet("sample")]
@@ -35,7 +37,7 @@ namespace WhatsappNet.Api.Controllers
         [HttpGet]
         public IActionResult VerifyToken()
         {
-            string accessToken = "8de1bc4f-3a8e-4de7-b4e8-c9d0362071f7";
+            string accessToken = _configuration["Whatsapp:VerifyToken"] ?? string.Empty;
 
             var token = Request.Query["hub.verify_token"].ToString();
             var challenge = Request.Query["hub.challenge"].ToString();
